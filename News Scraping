@@ -1,0 +1,78 @@
+Automatic News Scraping with Python, Newspaper and Feedparser
+
+Purpose of the Code
+The code is designed to scrape news articles from an RSS feed. It can either:
+    1. Pull metadata only (title, link, summary, publish date) quickly using feedparser, or
+    2. Fetch the full article content along with metadata using newspaper3k.
+It is primarily intended for automating news collection from sites that provide RSS feeds (e.g., BBC News).
+
+Methods & Libraries Used 
+1. feedparser 
+	Parses RSS/Atom feeds (XML files provided by news sites).
+    • Extracts metadata stored in each feed item (feed.entries)
+
+2. newspaper3k (imported as newspaper)
+    • Downloads the full HTML of an article using article.download().
+    • Parses the page with article.parse()
+
+3. IPython.display (display, Markdown)
+    • Used to nicely format outputs in a Jupyter notebook for readability.
+
+
+import newspaper							(package name newspaper 3k)
+import feedparser							(package name feedparser)
+from IPython.display import display, Markdown
+
+-- each item (headline, link, summary…) stored in feed.entries. article.download fetches full HTML content from URL, article.parse() extracts text, authors, publish data etc. Need to pass RSS feed URL, an XML file, from news sites (most have them). Author needs to be manually scraped.
+
+def scrape_news_from_feed(feed_url):
+    articles = []
+    feed = feedparser.parse(feed_url)
+    for entry in feed.entries:
+	article = newspaper.Article(entry.link)
+	article.download()					
+	article.parse()						
+	articles.append({
+		'title': article.title,
+		'author': article.authors,
+		'publish_date': getattr(entry, "published", None),
+		'content': article.text
+        })
+    return articles
+
+url = 'https://feeds.bbci.co.uk/news/rss.xml'
+
+print(feedparser.parse(url).entries[0].keys())
+for article in scrape_news_from_feed(url)[:3]:
+	display(Markdown(f"**Title:** {article['title']}"))
+	display(Markdown(f"**Author:** {article['author']}"))
+	display(Markdown(f"**Publish Date:** {article['publish_date']}"))
+	display(Markdown(f"**Content:** {article['content']}"))
+	display(Markdown("---"))
+
+
+-- use feedparser if you only want metadata such as title, link, data and short summary (not entire article. Faster compared to newspaper
+
+import feedparser
+
+def scrape_news_from_feed(feed_url):
+	articles = []
+	feed = feedparser.parse(feed_url)
+    	for entry in feed.entries:
+        		articles.append({
+            		'title': entry.title,
+            		'link': entry.link,
+			'publish_date': entry.published if 'published' in entry else None,
+			'summary': entry.summary if 'summary' in entry else None
+			})
+    	return articles
+
+url = 'https://feeds.bbci.co.uk/news/rss.xml'
+
+print(feedparser.parse(url).entries[0].keys(), '\n')
+
+for article in scrape_news_from_feed(url):
+	display(Markdown(f"**Title:** {article['title']}"))
+	display(Markdown(f"**Publish Date:** {article['publish_date']}"))
+	display(Markdown(f"**Summary:** {article['summary']}"))
+	display(Markdown("---"))
