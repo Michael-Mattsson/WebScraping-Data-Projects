@@ -1,0 +1,60 @@
+Importing Stock Prices using yfinance
+
+Purpose
+The code collects and formats financial data for multiple stock tickers from Yahoo Finance and presents it in a clean, readable table. It extracts key details like company name, ticker symbol, current price, daily change, and trading volume.
+
+Tools Used
+    1. yfinance
+        ◦ Fetches stock data from Yahoo Finance.
+        ◦ Provides structured information like longName, symbol, regularMarketPrice, regularMarketChange, volume, etc.
+        ◦ Handles dynamic content (live prices) without scraping HTML.
+    2. pandas
+        ◦ Used to create and manipulate a DataFrame from the collected data.
+        ◦ Provides functionality for renaming columns and formatting numeric data.
+    3. Python f-strings and lambda functions
+        ◦ Format prices as currency ($), changes as percentages, and volume with commas for readability.
+
+
+import yfinance as yf
+import pandas as pd
+
+tickers = ["OPEN", "TSLA", "NVDA", "SNAP", "GRAB", "DNN", "AAL", "WBD", "INTC", "MARA"]
+all_data = []
+
+print(yf.Ticker("AAPL").info.keys())
+
+---------------------------------------------------
+
+for t in tickers:
+    stock = yf.Ticker(t)
+    info = stock.info
+    all_data.append([
+        info['longName'],
+        info['symbol'],
+        info['regularMarketPrice'],
+        info['regularMarketChange'],
+        info['volume']  
+    ])
+
+print(all_data)
+
+---------------------------------------------------
+
+column_names = ["longName", "symbol", "regularMarketPrice", "regularMarketChange", "volume"]
+df = pd.DataFrame(all_data, columns=column_names)
+
+df = df.rename(columns={
+    "longName": "Name",
+    "symbol": "Ticker",
+    "regularMarketPrice": "Price",
+    "regularMarketChange": "Change",
+    "volume": "Volume"
+})
+
+df["Price"] = df["Price"].apply(lambda x: f"${x:,.2f}" if pd.notnull(x) else "N/A")
+
+df["Change"] = df["Change"].apply(lambda x: f"{x:.2f}%" if pd.notnull(x) else "N/A")
+
+df["Volume"] = df["Volume"].apply(lambda x: f"{x:,}" if pd.notnull(x) else "N/A")
+
+print(df)
