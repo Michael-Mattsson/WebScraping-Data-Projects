@@ -18,6 +18,7 @@ Organizing data into tables for analysis and visualization.
 
 Formatting numeric data (currency, percentages, large numbers) for readability.
 
+
 #### Automated News Collection & Scraping
 
 Purpose: Collect and process news articles from RSS feeds or news websites, either as metadata or full content.
@@ -31,6 +32,7 @@ Parsing XML/RSS feeds to extract article metadata such as title, link, summary, 
 Downloading and parsing full articles to extract text content and authorship.
 
 Presenting results in readable formats, suitable for analysis or automated monitoring.
+
 
 ### Tools and Libraries
 
@@ -52,17 +54,19 @@ Methods for generating readable outputs, summaries, or reports.
 
 Automation techniques for periodic data retrieval or monitoring.
 
+
 ### General Workflow
 
-#### Data Collection: Fetch raw data from online sources, APIs, or RSS feeds.
+Data Collection: Fetch raw data from online sources, APIs, or RSS feeds.
 
-#### Data Parsing: Process and clean the data, extracting relevant fields.
+Data Parsing: Process and clean the data, extracting relevant fields.
 
-#### Data Structuring: Organize data into tables or structured formats for analysis.
+Data Structuring: Organize data into tables or structured formats for analysis.
 
-#### Formatting & Analysis: Apply numeric or textual formatting, calculate metrics, or summarize results.
+Formatting & Analysis: Apply numeric or textual formatting, calculate metrics, or summarize results.
 
-#### Output & Visualization: Display results in readable formats suitable for reports, dashboards, or further analysis.
+Output & Visualization: Display results in readable formats suitable for reports, dashboards, or further analysis.
+
 
 ### Applications
 
